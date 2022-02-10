@@ -17,27 +17,43 @@ function createToken(user: any) {
 
 
 /**
- * 
+ * Login
+ * Handle Errors:
+ *  - No Email
+ *  - Bad Email
+ *  - No Password
+ *  - Bad Password
+ *  - Backend Error
  */
 exports.login = (req: any, res: any ) => {
     console.log('Attempting to log in...')
+
+    // No Email OR No Password
     if (!req.body.email || !req.body.password) {
-        return res.status(400).send({ 'msg': 'You need to send email and password' });
+        return res.status(400).send({ msg: 'You need to send email and password' });
     }
   
-    User.findOne({ email: req.body.email }, (err: any, user: any) => {
+    User.findOne(
+      { email: req.body.email }, 
+      (err: any, user: any) => {
+        // Backend Error
         if (err) {
-            return res.status(400).send({ 'msg': err });
+            return res.status(400).send({ 
+              msg: 'There was an error on the BackEnd',
+              err 
+            });
         }
-  
+        
+        // Bad Email Error
         if (!user) {
-            return res.status(400).json({ 'msg': 'The user does not exist' });
+            return res.status(400).json({ msg: 'The user does not exist' });
         }
   
         user.comparePassword(req.body.password, (err: any, isMatch: any) => {
             if (isMatch && !err) {
                 console.log('Logged in as: ' + user.email);
-                res.status(200).json({
+                // Successful Login
+                return res.status(200).json({
                     msg: 'User @' + user.email + ' has logged in',
                     token: createToken(user),
                     fullName: user.fullName,
@@ -45,7 +61,8 @@ exports.login = (req: any, res: any ) => {
                     email: user.email
                 });
             } else {
-                return res.status(400).json({ msg: 'The email and password don\'t match.' });
+                // Bad Password
+                return res.status(400).json({ msg: 'Bad Password' });
             }
         });
     });
@@ -57,15 +74,20 @@ exports.login = (req: any, res: any ) => {
  * @param picture
  * @param email
  */
+
+/**
+ * Create a New User
+ *  - Backend Error Finding Existing Users
+ *  - User Already Exists
+ *  - Backend Error Saving New User
+ *  - 
+ */
 exports.register = (req: any, res: any) => {
     console.log(req.body);
     let email = req.body.email;
     let password = req.body.password;
     let fullName = req.body.fullName;
-    let picture = req.body.picture;
-    if (!req.body.email || !req.body.password) {
-        return res.status(400).json({ 'msg': 'You need to send email and password' });
-    }
+    // let picture = req.body.picture;
 
     User.findOne({ email: req.body.email }, (err: any, user: any) => {
         if (err) {
@@ -73,19 +95,19 @@ exports.register = (req: any, res: any) => {
         }
 
         if (user) {
-            return res.status(400).json({ 'msg': 'The user already exists' });
+            return res.status(400).json({ msg: 'The user already exists' });
         }
 
         let newUser = User({
           email,
           password,
           fullName,
-          picture
+          // picture
        });
         newUser.save((err: any, user: any) => {
             if (err) {
                 console.log(err)
-                return res.status(400).json({ 'msg': err });
+                return res.status(400).json({ msg: err });
             }
             if (!user) {
                 console.log('There was no user saved!')

@@ -7,19 +7,25 @@ exports.getFeaturedProducts = (req: any, res: any ) => {
         let featuredProducts = products.filter((product: any) => {
             return product.featured == true;
         })
-        return res.status(200).json({
-            msg: "Featured Products",
-            featuredProducts})
+        return res.status(200).json(
+            featuredProducts)
       })
 }
 
 exports.getAllProducts = (req: any, res: any) => {
     Product.find((err: any, products: any) => {
         console.log('Getting Products...')
-        return res.status(200).json({
-            msg: "All Products",
-            products
-        })
+        return res.status(200).json(products)
+      })
+}
+
+exports.getProductInfo = (req: any, res: any) => {
+    let id = req.body._id;
+    Product.findById(
+        id,
+        (err: any, product: any) => {
+        console.log('Getting Products...')
+        return res.status(200).json(product)
       })
 }
 

@@ -112,9 +112,9 @@ exports.changePassword = (req: any, res: any ) => {
   
     let email = req.body.email;
     let newPassword = req.body.newPassword;
-    let password = req.body.password;
+    let oldPassword = req.body.oldPassword;
 
-    if (!email || !password) {
+    if (!email || !oldPassword) {
         res.status(400).send('Needs email and a password')
     } else {
   
@@ -131,7 +131,7 @@ exports.changePassword = (req: any, res: any ) => {
 
   
           console.log('Comparing passwords ...')
-          user.comparePassword(password, (err: any, isMatch: any) => {
+          user.comparePassword(oldPassword, (err: any, isMatch: any) => {
 
             if (isMatch && !err) {
   
