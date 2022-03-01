@@ -7,8 +7,10 @@ router.get('/get-all-products', productsController.getAllProducts);
 router.post('/get-product-info', productsController.getProductInfo);
 router.post('/favorite-product', productsController.favoriteProduct);
 router.post('/unfavorite-product', productsController.unfavoriteProduct);
+router.post('/get-cart', productsController.getCart);
 router.post('/add-to-cart', productsController.addToCart);
 router.post('/remove-from-cart', productsController.removeFromCart);
+router.post('/add-review', productsController.addReview);
 
 export {};
 

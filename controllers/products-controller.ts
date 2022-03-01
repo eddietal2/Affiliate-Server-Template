@@ -53,7 +53,7 @@ exports.favoriteProduct = (req: any, res: any ) => {
             })
         } else {
             console.log("User has already favorited this product.")
-            return res.status(400).json({msg: "User has already favorited this product."})
+            return res.status(200).json(user.favoriteProducts)
         }
     })
     
@@ -83,8 +83,47 @@ exports.unfavoriteProduct = (req: any, res: any) => {
             })
         } else {
             console.log("User hasn't never favorited this Product.")
-            return res.status(400).json({msg: "User hasn't never favorited this Product."})
+            return res.status(200).json(user.favoriteProducts)
         }
+    })
+}
+
+exports.getCart = (req: any, res: any ) => {
+    let email = req.body.email;
+
+    console.clear()
+    console.log('Get Cart');
+
+    User.findOne(
+        {email},
+        (err: any, user: any) => {
+        if(err) {
+            return res.status(400).json(err)
+        }
+        if(!user){
+            return res.status(400).json({
+                msg: `There was no user with the email ${email}`
+            })
+        }
+        console.log('Getting Products...')
+        Product.find((err: any, products: Array<Object>) => {
+            let userCart: any[] = [];
+
+            if(err) {
+                return res.status(400).json(err);
+            }
+
+            user['cart'].forEach((cartItem: string) => {
+              
+                products.forEach((product: any) => {
+                  if(product['_id'] == cartItem) {
+                    userCart.push(product);
+                  }
+                })
+              })
+            return res.status(200).json(userCart)
+          })
+        
     })
 }
 
@@ -110,11 +149,30 @@ exports.addToCart = (req: any, res: any ) => {
                   if (!user) return res.status(400).json({ msg : 'User wasn\'t found' });
                   
                   console.log('Adding this product to User\'s Cart');
-                  return res.status(200).json(user.cart);
+
+                  Product.find((err: any, products: Array<Object>) => {
+                    let userCart: any[] = [];
+        
+                    if(err) {
+                        return res.status(400).json(err);
+                    }
+        
+                    user['cart'].forEach((cartItem: string) => {
+                      
+                        products.forEach((product: any) => {
+                          if(product['_id'] == cartItem) {
+                            userCart.push(product);
+                          }
+                        })
+                      })
+                    return res.status(200).json({
+                        userCart
+                    })
+                  })
             })
         } else {
             console.log("User already has this product in their cart.")
-            return res.status(400).json({msg: "User already has this product in their cart."})
+            // return res.status(400).json({msg: "User already has this product in their cart."})
         }
         
     })
@@ -142,7 +200,24 @@ exports.removeFromCart = (req: any, res: any) => {
                   if (!user) return res.status(400).json({ msg : 'User wasn\'t found' });
                   
                   console.log('Removed this product from User\'s Cart');
-                  return res.status(200).json(user.cart);
+                  
+                  Product.find((err: any, products: Array<Object>) => {
+                    let userCart: any[] = [];
+        
+                    if(err) {
+                        return res.status(400).json(err);
+                    }
+        
+                    user['cart'].forEach((cartItem: string) => {
+                      
+                        products.forEach((product: any) => {
+                          if(product['_id'] == cartItem) {
+                            userCart.push(product);
+                          }
+                        })
+                      })
+                    return res.status(200).json(userCart)
+                  })
             })
         } else {
             console.log("User has never added this product in their cart.")
@@ -150,5 +225,35 @@ exports.removeFromCart = (req: any, res: any) => {
         }
         
     })
+}
+
+exports.addReview = (req: any, res: any) => {
+    let email = req.body.email;
+    let review = req.body.review;
+    let rating = req.body.rating;
+    let id = req.body._id;
+    let date = Date.now();
+
+    // Find Product
+    Product.findOneAndUpdate(
+        {_id: id},
+        { $push: { reviews: {
+            email,
+            review,
+            rating,
+            date
+        } }},
+        {new: true},
+        (err: any, product: any) => {
+            if(err) {
+                return res.status(400).json(err)
+            }
+            if(!product) {
+                return res.status(400).json({msg: 'No Product with that ID'})
+            }
+
+            return res.status(200).json(product.reviews);
+
+      })
 }
 

@@ -4,8 +4,10 @@ var authController = require('../controllers/auth-controller.ts')
 
 router.post('/login', authController.login);
 router.post('/register', authController.register);
-router.post('/send-code', authController.sendSixDigitCode);
 router.post('/change-password-forgot', authController.changePasswordForgot);
+router.post('/send-register-code', authController.sendRegisterCode);
+router.post('/send-forgot-code', authController.sendForgotCode);
+
 
 export {};
 

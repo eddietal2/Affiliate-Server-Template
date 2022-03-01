@@ -174,3 +174,21 @@ exports.unsubscribeToNewsletter = (req: any, res: any) => {
     return res.status(200).json({msg: "unsubscribed to newsletter"})
 }
 
+exports.getFavoriteProducts = (req: any, res: any) => {
+  console.log('Getting Users favorite products');
+  console.log(req.body);
+  let email = req.body.email;
+  // Find user, compare password, then update email.
+  User.findOne({ email: email}, (err: any, user: any) => {
+          if (err) {
+            return res.status(400).send({ 'msg': err });
+          }
+  
+          if (!user) {
+            return res.status(400).json({ 'msg': 'The user does not exist' });
+          }
+
+          return res.status(200).json(user.favoriteProducts)
+  })
+}
+

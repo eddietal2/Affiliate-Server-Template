@@ -3,9 +3,13 @@ export {};
 
 const ProductSchema = new mongoose.Schema(
   {
+    apiID: {
+      type: String,
+      maxlength: 15
+    },
     title: {
       type: String,
-      maxlength: 100
+      maxlength: 140
     },
     featured: {
       type: Boolean,
@@ -31,8 +35,8 @@ const ProductSchema = new mongoose.Schema(
       maxlength: 500
     },
     price: {
-      type: Number,
-      maxlength: 3
+      type: String,
+      maxlength: 10
     },
     sample: {
       type: String,

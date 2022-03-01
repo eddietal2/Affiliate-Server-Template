@@ -22,11 +22,23 @@ const UserSchema = new mongoose.Schema(
       type: String,
       maxlength: 8
     },
+    dateRegistered: {
+      type: Date,
+      maxlength: 60
+    },
     favoriteProducts: {
       type: Array,
       default: []
     },
     cart: {
+      type: Array,
+      default: []
+    },
+    reviews: {
+      type: Array,
+      default: []
+    },
+    productsBought: {
       type: Array,
       default: []
     },
