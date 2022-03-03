@@ -149,30 +149,13 @@ exports.addToCart = (req: any, res: any ) => {
                   if (!user) return res.status(400).json({ msg : 'User wasn\'t found' });
                   
                   console.log('Adding this product to User\'s Cart');
+                  console.log(user.cart);
 
-                  Product.find((err: any, products: Array<Object>) => {
-                    let userCart: any[] = [];
-        
-                    if(err) {
-                        return res.status(400).json(err);
-                    }
-        
-                    user['cart'].forEach((cartItem: string) => {
-                      
-                        products.forEach((product: any) => {
-                          if(product['_id'] == cartItem) {
-                            userCart.push(product);
-                          }
-                        })
-                      })
-                    return res.status(200).json({
-                        userCart
-                    })
-                  })
+                  return res.status(200).json(user.cart)
             })
         } else {
             console.log("User already has this product in their cart.")
-            // return res.status(400).json({msg: "User already has this product in their cart."})
+            return res.status(400).json({msg: "User already has this product in their cart."})
         }
         
     })
@@ -202,21 +185,14 @@ exports.removeFromCart = (req: any, res: any) => {
                   console.log('Removed this product from User\'s Cart');
                   
                   Product.find((err: any, products: Array<Object>) => {
-                    let userCart: any[] = [];
         
                     if(err) {
                         return res.status(400).json(err);
                     }
-        
-                    user['cart'].forEach((cartItem: string) => {
-                      
-                        products.forEach((product: any) => {
-                          if(product['_id'] == cartItem) {
-                            userCart.push(product);
-                          }
-                        })
-                      })
-                    return res.status(200).json(userCart)
+
+                    console.log(user.cart)
+
+                    return res.status(200).json(user.cart)
                   })
             })
         } else {

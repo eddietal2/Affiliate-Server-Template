@@ -17,6 +17,7 @@ function createToken(user: any) {
         fullName: user.fullName, 
         picture: user.picture, 
         cartLength: user.cart.length, 
+        cart: user.cart, 
         favorites: user.favoriteProducts, 
       }, config.jwtSecret, {
         expiresIn: 200 // 86400 expires in 24 hours
