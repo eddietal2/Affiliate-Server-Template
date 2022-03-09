@@ -1,6 +1,5 @@
 const mongoose                = require("mongoose");
 const express                 = require("express");
-const fs                      = require("fs");
 const app                     = express();
 const cors                    = require('cors');
 const dotenv                  = require('dotenv');
@@ -40,7 +39,6 @@ app.use("/landing", landingPageRoute);
 app.use("/auth", authRoute);
 app.use("/products", productsRoute);
 app.use("/user-profile", userProfileRoute);
-app.use("/admin", adminRoute);
 
 // Listen on PORT
 const port = process.env.PORT || 3000;

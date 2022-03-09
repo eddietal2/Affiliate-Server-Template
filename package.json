@@ -14,12 +14,18 @@
     "bcrypt": "^5.0.1",
     "config": "^3.3.7",
     "cors": "^2.8.5",
+    "css-select": "^4.2.1",
+    "css-what": "^6.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.4.1",
+    "mongodb-redact": "^0.2.2",
     "mongoose": "^6.2.4",
     "nodemailer": "^6.7.2",
     "nodemon": "^2.0.15",
+    "redact": "^0.0.9",
+    "ts-node": "^10.7.0",
     "typescript": "^4.5.3"
   },
   "devDependencies": {
