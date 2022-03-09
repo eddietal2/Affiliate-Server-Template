@@ -45,7 +45,7 @@ const port = process.env.PORT || 3000;
 app.listen(port, 
   () => {
     console.log(`Listening on port ${port}`)})
-    console.log('Affilate Application Server\n');
+    console.log('Affilate Template Application Server\n');
     
 
 export {}
