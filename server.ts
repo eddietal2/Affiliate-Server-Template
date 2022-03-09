@@ -23,7 +23,7 @@ mongoose
   // .set('useCreateIndex', true)
   // .set('useFindAndModify', false)
 
-  .connect(process.env.DB_HOST_DEV, {
+  .connect(process.env.DB_HOST_PROD, {
     useNewUrlParser: true, useUnifiedTopology: true
   })
 
