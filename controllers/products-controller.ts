@@ -203,6 +203,39 @@ exports.removeFromCart = (req: any, res: any) => {
     })
 }
 
+exports.emptyCart = (req: any, res: any) => {
+    let email = req.body.email;
+
+    console.clear()
+    console.log(`Emptying from Cart for user: ${email}`);
+
+    User.findOneAndUpdate(
+        {email: email},
+        {cart: []},
+        {new: true},
+        (err: any, user: any) => {
+        if(err) {
+            return res.status(400).json(err)
+        }
+        if(!user) {
+            console.log('No user with that email');
+            return res.status(400).json({msg: 'No user with that email'})
+            
+        }
+        if(user) {
+            console.log('Emptied Users Cart');
+            console.log('Cart: ' + user.cart);
+            
+            return res.status(200).json(user.cart)
+            
+        } else {
+            console.log("User has never added this product in their cart.")
+            return res.status(400).json({msg: "User has never added this product in their cart."})
+        }
+        
+    })
+}
+
 exports.addReview = (req: any, res: any) => {
     let email = req.body.email;
     let review = req.body.review;
