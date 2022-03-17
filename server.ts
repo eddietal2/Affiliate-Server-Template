@@ -35,7 +35,7 @@ app.use(cors());
 app.use(express.json());
 
 // API Routes
-app.use("/landing", landingPageRoute);
+app.use("/landing-page", landingPageRoute);
 app.use("/auth", authRoute);
 app.use("/products", productsRoute);
 app.use("/user-profile", userProfileRoute);

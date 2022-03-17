@@ -237,9 +237,13 @@ exports.emptyCart = (req: any, res: any) => {
 }
 
 exports.addReview = (req: any, res: any) => {
+    console.clear();
+    console.log('Request to Add a Review Recieved --');
+    console.log(req.body);
+    
     let email = req.body.email;
     let review = req.body.review;
-    let rating = req.body.rating;
+    let userRating = req.body.rating;
     let id = req.body._id;
     let date = Date.now();
 
@@ -249,20 +253,52 @@ exports.addReview = (req: any, res: any) => {
         { $push: { reviews: {
             email,
             review,
-            rating,
+            rating: userRating,
             date
         } }},
-        {new: true},
-        (err: any, product: any) => {
+        (err: any, productOne: any) => {
             if(err) {
+                console.log('There was an Error Updating Reviews');
                 return res.status(400).json(err)
             }
-            if(!product) {
+            if(!productOne) {
                 return res.status(400).json({msg: 'No Product with that ID'})
             }
 
-            return res.status(200).json(product.reviews);
+            function updateRating(rating:number, reviews: any) {
 
+                let reviewsLength = reviews.length;
+                let reviewsRatingTotal = 0;
+
+                reviews.forEach((review: any) => {
+                    reviewsRatingTotal = reviewsRatingTotal + review.rating
+                });
+
+                return (reviewsRatingTotal + rating) / (reviewsLength + 1);
+            }
+
+            if(productOne) {
+                Product.findOneAndUpdate(
+                    {_id: id},
+                    {$set: { rating: updateRating(userRating, productOne.reviews)}},
+                    {new: true},
+                    (err: any, product: any) => {
+                        if(err) {
+                            console.log(err);
+                            return res.status(400).json(err);
+                        }
+                        if(product) {
+                            console.log('Successfully Added Review and Updated that Product\'s Rating');
+                            console.log('Rating: ' + product.rating);
+                            console.log('Reviews: ' + product.reviews.length);
+                            
+                            
+                            return res.status(200).json(product.reviews);
+                        }
+                        
+                    }
+                ) 
+            }
       })
 }
 

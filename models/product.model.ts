@@ -28,7 +28,8 @@ const ProductSchema = new mongoose.Schema(
     },
     rating: {
       type: Number,
-      maxlength: 1
+      maxlength: 1,
+      default: 0
     },
     duration: {
       type: Number,
