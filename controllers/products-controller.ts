@@ -33,7 +33,6 @@ exports.favoriteProduct = (req: any, res: any ) => {
     let email = req.body.email;
     let productID = req.body._id;
 
-    console.clear()
     console.log(`Favorite Request Object Id: ${productID}`);
   
     // post it to users favoriteJobs array in User Model
@@ -48,11 +47,12 @@ exports.favoriteProduct = (req: any, res: any ) => {
                   if (err) return res.status(400).json({ msg : 'Error finding user' });
                   if (!user) return res.status(400).json({ msg : 'User wasn\'t found' });
                   
-                  console.log('Favoriting Product');
+                  console.log('Favoriting Product');            
+                  console.log(user.favoriteProducts);
                   return res.status(200).json(user.favoriteProducts);
             })
         } else {
-            console.log("User has already favorited this product.")
+            console.log("User has already favorited this product.")            
             return res.status(200).json(user.favoriteProducts)
         }
     })
@@ -63,7 +63,6 @@ exports.unfavoriteProduct = (req: any, res: any) => {
     let email = req.body.email;
     let productID = req.body._id;
 
-    console.clear()
     console.log(`Unfavorite Request Object Id: ${productID}`);
   
     // remove it to users favoriteJobs array in User Model

@@ -199,8 +199,15 @@ exports.sendRegisterCode = (req: any, res: any) => {
 
   console.clear();
   console.log(req.body);
+
   let code = req.body.code;
   let email = req.body.email;
+
+  if(!code || !email) {
+    console.log('There was either no Code or Email in the Request!');
+    return res.status(400).json({msg: "There was either no Code or Email in the Request!"})
+  }
+
   // Set transport service which will send the emails
   var transporter =  nodemailer.createTransport({
     service: 'gmail',
@@ -220,14 +227,18 @@ exports.sendRegisterCode = (req: any, res: any) => {
   html:
   `
     <h1>Affiliate Site</h1>
+
     <div style="width: 100px; height: 100px; background: lightgreen; text-align: center;">
       <p style="padding-top: 3em;">Logo</p>
     </div>
+
     <h3 style="
       font-size: 1.4em;
       color: #888;
     ">Here is your 4 digit code</h3>
+
     <p style="font-size: 1.4em;">Please use this code on the website to complete your registration: </p>
+    
     <p style="
       background: #dedede;
       border-radius: 100px;
