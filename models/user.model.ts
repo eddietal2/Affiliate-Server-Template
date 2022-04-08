@@ -23,8 +23,7 @@ const UserSchema = new mongoose.Schema(
       maxlength: 8
     },
     dateRegistered: {
-      type: Date,
-      maxlength: 60
+      type: Number
     },
     favoriteProducts: {
       type: Array,
